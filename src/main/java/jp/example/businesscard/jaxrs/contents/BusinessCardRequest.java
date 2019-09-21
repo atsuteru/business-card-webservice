@@ -1,4 +1,4 @@
-package jp.example.jaxrs.controllers.contents;
+package jp.example.businesscard.jaxrs.contents;
 
 import java.util.Map;
 

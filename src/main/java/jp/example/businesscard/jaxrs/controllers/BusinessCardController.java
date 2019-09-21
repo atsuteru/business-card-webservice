@@ -1,7 +1,7 @@
-package jp.example.jaxrs.controllers;
+package jp.example.businesscard.jaxrs.controllers;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,13 +12,15 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.UriInfo;
 
 import jp.example.businesscard.BusinessCardGenerator;
-import jp.example.jaxrs.controllers.contents.BusinessCardRequest;
-import jp.example.jaxrs.controllers.contents.BusinessCardResponse;
+import jp.example.businesscard.jaxrs.contents.BusinessCardRequest;
+import jp.example.businesscard.jaxrs.contents.BusinessCardResponse;
 import jp.example.jaxrs.helpers.UriInfoHelper;
 
 @Path("businesscard")
@@ -26,7 +28,7 @@ public class BusinessCardController {
 	@GET
 	@Path("/generate/as/pdf")
 	@Produces("application/pdf")
-	public InputStream generatePdf(@QueryParam("template") String templateName, @Context UriInfo uriInfo) {
+	public StreamingOutput generatePdf(@QueryParam("template") String templateName, @Context UriInfo uriInfo) {
 		var parameters = new HashMap<String, String>();
 		for (Map.Entry<String, List<String>> entry : uriInfo.getQueryParameters().entrySet()) {
 			parameters.put(entry.getKey(), entry.getValue().get(0));
@@ -35,7 +37,14 @@ public class BusinessCardController {
 		request.templateName = templateName;
 		request.parameters = parameters;
 		var response = generate(request, uriInfo);
-		return new ByteArrayInputStream(response.pdf);
+        return new StreamingOutput() {
+            @Override
+            public void write(OutputStream out)
+                    throws IOException, WebApplicationException {
+            	out.write(response.pdf);
+                out.flush();
+            }
+        };
 	}
 
 	@GET

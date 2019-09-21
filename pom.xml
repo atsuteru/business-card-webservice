@@ -56,12 +56,12 @@
             <type>pom</type>
             <scope>test</scope>
         </dependency>
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>servlet-api</artifactId>
-		    <version>2.4</version>
-		    <scope>compile</scope> <!-- If set to "provided", SecurityExcepion will occur when the status is changed to "unidling" on heroku. -->
-		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.4</version>
+            <scope>compile</scope> <!-- If set to "provided", SecurityExcepion will occur when the status is changed to "unidling" on heroku. -->
+        </dependency>
         <!-- For generate Business-card START -->
         <dependency>
             <groupId>org.glassfish.jersey.ext</groupId>
