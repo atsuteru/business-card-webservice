@@ -1,6 +1,6 @@
 package jp.example.jaxrs.helpers;
 
-import javax.ws.rs.core.UriInfo;
+import jakarta.ws.rs.core.UriInfo;
 
 public class UriInfoHelper {
 	public static String getServletUrl(UriInfo uriInfo) {
